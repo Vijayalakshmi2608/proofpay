@@ -1,0 +1,29 @@
+{
+  "name": "proofpay-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Non-custodial milestone escrow and cross-chain payout protocol for NEAR.",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=9.15.0"
+  },
+  "scripts": {
+    "dev": "dotenv -e .env -- pnpm --filter @proofpay/frontend dev",
+    "dev:verifier": "dotenv -e .env -- pnpm --filter @proofpay/agent-verifier dev",
+    "build": "pnpm -r --if-present build && cargo build --manifest-path contracts/Cargo.toml --target wasm32-unknown-unknown --release",
+    "test": "pnpm -r --if-present test && cargo test --manifest-path contracts/Cargo.toml",
+    "deploy:testnet": "bash scripts/deploy-testnet.sh",
+    "test:demo": "if [ -f \"$HOME/.cargo/env\" ]; then . \"$HOME/.cargo/env\"; fi && pnpm test && node scripts/test-demo.mjs && pnpm --filter @proofpay/agent-verifier exec tsx ../scripts/test-reproducibility.ts && npm run zip",
+    "zip": "pnpm --filter @proofpay/agent-verifier exec tsx ../scripts/package-project.ts",
+    "prepare:submission": "pnpm --filter @proofpay/agent-verifier exec tsx ../scripts/prepare-submission.ts",
+    "verify:key-permissions": "pnpm --filter @proofpay/agent-verifier run verify:key-permissions",
+    "typecheck": "pnpm -r --if-present typecheck"
+  },
+  "devDependencies": {
+    "@types/archiver": "^8.0.0",
+    "archiver": "^8.0.0",
+    "dotenv-cli": "8.0.0",
+    "typescript": "5.7.3"
+  }
+}
