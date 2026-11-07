@@ -96,7 +96,21 @@ describe("verifier Function-Call key policy", () => {
         "proofpay.testnet",
         250000000000000000000000n,
       ),
-    ).toThrow(/does not match the configured limit/);
+    ).toThrow(/exceeds the configured limit/);
+    expect(() =>
+      assertVerifierFunctionCallPermission(
+        { FunctionCall: { receiver_id: "proofpay.testnet", method_names: ["record_attestation"], allowance: "100" } },
+        "proofpay.testnet",
+        250n,
+      ),
+    ).not.toThrow();
+    expect(() =>
+      assertVerifierFunctionCallPermission(
+        { FunctionCall: { receiver_id: "proofpay.testnet", method_names: ["record_attestation"], allowance: "251" } },
+        "proofpay.testnet",
+        250n,
+      ),
+    ).toThrow(/exceeds the configured limit/);
     expect(() =>
       assertVerifierFunctionCallPermission(
         {
@@ -159,6 +173,14 @@ describe("verifier Function-Call key policy", () => {
         Object.assign(new Error("RPC transaction rejected"), {
           type: "MethodNameMismatch",
           method_name: "transfer_all",
+        }),
+      ),
+    ).toBe(true);
+    expect(
+      isExpectedAccessKeyPermissionRejection(
+        Object.assign(new Error("Access key does not allow method transfer_all"), {
+          name: "AccessKeyMethodNameMismatchActionError",
+          methodName: "transfer_all",
         }),
       ),
     ).toBe(true);

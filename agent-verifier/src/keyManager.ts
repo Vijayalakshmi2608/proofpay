@@ -138,13 +138,17 @@ export function assertVerifierFunctionCallPermission(
   if (allowance <= 0n) {
     throw new Error("Verifier Function-Call key gas allowance must be greater than zero");
   }
-  if (expectedAllowanceYocto !== undefined && allowance !== expectedAllowanceYocto) {
-    throw new Error("Verifier Function-Call key gas allowance does not match the configured limit");
+  if (expectedAllowanceYocto !== undefined && allowance > expectedAllowanceYocto) {
+    throw new Error("Verifier Function-Call key gas allowance exceeds the configured limit");
   }
 }
 
 export function isExpectedAccessKeyPermissionRejection(error: unknown): boolean {
-  const expectedVariants = new Set(["MethodNameMismatch", "FunctionCallAccessKeyMethodNotAllowed"]);
+  const expectedVariants = new Set([
+    "MethodNameMismatch",
+    "FunctionCallAccessKeyMethodNotAllowed",
+    "AccessKeyMethodNameMismatchActionError",
+  ]);
   const errorCodeFields = ["name", "type", "error_type", "errorType", "error_code", "errorCode", "code"];
   const envelopeFields = [
     "data", "error_data", "errorData", "cause", "error", "errors", "details", "context", "status", "Failure", "failure",

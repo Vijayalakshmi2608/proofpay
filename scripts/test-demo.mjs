@@ -1,5 +1,5 @@
 const frontend = process.env.DEMO_FRONTEND_URL ?? "http://localhost:3000";
-const verifier = process.env.DEMO_VERIFIER_URL ?? "http://localhost:4000";
+const verifier = process.env.DEMO_VERIFIER_URL ?? "http://localhost:3002";
 
 async function get(url) {
   const response = await fetch(url, { signal: AbortSignal.timeout(2_500) });

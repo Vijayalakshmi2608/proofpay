@@ -7,7 +7,7 @@ const root = existsSync(join(currentDirectory, "contracts")) ? currentDirectory 
 const outputPath = join(root, "proofpay-hackathon-bundle.zip");
 const temporaryPath = `${outputPath}.partial`;
 const excludedDirectories = new Set([
-  ".git", ".next", ".turbo", ".cache", ".pnpm-store", "node_modules", "target", "coverage", "dist", "out",
+  ".git", ".next", ".secrets", ".turbo", ".cache", ".pnpm-store", "node_modules", "target", "coverage", "dist", "out",
 ]);
 const requiredDirectories = ["contracts", "frontend", "agent-verifier", "scripts"];
 const requiredFiles = ["package.json", "README.md", "HACKATHON.md", "LICENSE"];
@@ -78,7 +78,7 @@ async function main(): Promise<void> {
   await rename(temporaryPath, outputPath);
   const outputStat = await stat(outputPath);
   console.log(`[SUCCESS] Saved ${relative(root, outputPath)} (${humanSize(outputStat.size)})`);
-  console.log(`[INFO] Packaged ${files.length} files; excluded dependencies, build output, VCS metadata and secret environment files.`);
+  console.log(`[INFO] Packaged ${files.length} files; excluded dependencies, build output, VCS metadata, local secrets and environment files.`);
 }
 
 main().catch(async (error: unknown) => {
