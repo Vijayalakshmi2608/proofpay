@@ -24,7 +24,8 @@ export async function POST(request: Request) {
   }
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return errorResponse("invalid_request", 400);
   const body = JSON.stringify({ ...(parsed as Record<string, unknown>), dryRun: true });
-  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:4000";
+  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:3002";
+  const verifierToken = process.env.VERIFIER_API_TOKEN?.trim();
   let upstreamUrl: string;
   try {
     upstreamUrl = new URL("/api/verify", baseUrl).toString();
@@ -32,7 +33,9 @@ export async function POST(request: Request) {
     return errorResponse("verifier_not_configured", 503);
   }
   try {
-    const upstream = await fetch(upstreamUrl, { method: "POST", headers: { "content-type": "application/json", accept: "application/json" }, body, cache: "no-store", signal: AbortSignal.timeout(22_000) });
+    const headers: Record<string, string> = { "content-type": "application/json", accept: "application/json" };
+    if (verifierToken) headers.authorization = `Bearer ${verifierToken}`;
+    const upstream = await fetch(upstreamUrl, { method: "POST", headers, body, cache: "no-store", signal: AbortSignal.timeout(22_000) });
     const responseText = await upstream.text();
     if (responseText.length > 64_000) return errorResponse("verifier_response_too_large", 502);
     return new Response(responseText, { status: upstream.status, headers: { "content-type": upstream.headers.get("content-type") ?? "application/json", "cache-control": "no-store" } });

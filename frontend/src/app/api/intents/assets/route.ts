@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:4000";
+  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:3002";
   let upstreamUrl: string;
   try {
     upstreamUrl = new URL("/api/intents/assets", baseUrl).toString();

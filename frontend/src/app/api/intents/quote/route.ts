@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   }
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return errorResponse("invalid_request", 400);
   const body = JSON.stringify({ ...(parsed as Record<string, unknown>), dry: true });
-  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:4000";
+  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:3002";
   let upstreamUrl: string;
   try {
     upstreamUrl = new URL("/api/intents/quote", baseUrl).toString();

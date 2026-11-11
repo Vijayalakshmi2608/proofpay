@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     return jsonError("invalid_json", 400);
   }
 
-  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:4000";
+  const baseUrl = process.env.VERIFIER_API_BASE_URL?.trim() || "http://127.0.0.1:3002";
   let verifierUrl: string;
   try {
     verifierUrl = new URL("/v1/attest", baseUrl).toString();
