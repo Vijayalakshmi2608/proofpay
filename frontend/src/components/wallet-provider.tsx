@@ -51,7 +51,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
     async function initialize() {
       try {
-        const nodeUrl = process.env.NEXT_PUBLIC_NEAR_RPC_URL?.trim() || `https://rpc.${network}.near.org`;
+        const nodeUrl = new URL(`/api/near-rpc?network=${network}`, window.location.origin).toString();
         const walletSelector = await setupWalletSelector({
           network: {
             networkId: network,

@@ -25,7 +25,7 @@ export interface FunctionCallPermissionCheck {
 }
 
 function rpcUrl(network: NearNetwork): string {
-  return process.env.NEXT_PUBLIC_NEAR_RPC_URL?.trim() || `https://rpc.${network}.near.org`;
+  return `/api/near-rpc?network=${encodeURIComponent(network)}`;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

@@ -42,6 +42,7 @@ describe("NEAR RPC contract reads", () => {
     rpcFetch.mockResolvedValueOnce(viewResponse([milestone(2), milestone(9)]));
     const records = await listMilestones("proofpay.testnet", "testnet");
     expect(records.map((record) => record.id)).toEqual([9, 2]);
+    expect(rpcFetch.mock.calls[0]?.[0]).toBe("/api/near-rpc?network=testnet");
     const body = JSON.parse(String((rpcFetch.mock.calls[0]?.[1] as RequestInit).body)) as { params: { method_name: string; args_base64: string } };
     expect(body.params.method_name).toBe("list_milestones");
     expect(JSON.parse(Buffer.from(body.params.args_base64, "base64").toString("utf8"))).toEqual({ from_index: 0, limit: 50 });
