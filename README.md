@@ -228,7 +228,7 @@ proofpay/
 
 ## 🏆 Hackathon Track Alignment
 
-**Primary track: `realworld` (Real-World Money)**
+**Primary track: `AI Security & Defense`**
 
 | Track | How ProofPay fits |
 |-------|-------------------|
