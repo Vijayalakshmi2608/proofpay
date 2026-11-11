@@ -16,8 +16,6 @@
 
 ---
 
-## ⚡ TL;DR
-
 | | |
 |---|---|
 | **Problem** | Paying international contractors takes 3–7 days and costs real fees. Letting an AI agent automate it means handing an LLM your keys. |
